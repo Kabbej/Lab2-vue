@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Open+Sans&display=swap');
+/* Mobile First */
+
+body {
+    margin: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    background-color: grey;
+}
+
+p{
+    font-size: 16px;
+    line-height: 130%;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 7px;
+}
+
+a{
+    font-size: 18px;
+}
+
+article{
+    padding: 10px;
+}
+section{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "header"
+    "list"
+    "div";
+    grid-gap: 20px;
+}
+
+button{
+
+}
+
+#food-list{
+    grid-area: div;
+    grid-gap: 20px;
+    display: flex;
+    flex-display: column;
+}
+
+#list{
+    grid-area: div;
+    grid-gap: 20px;
+    display: flex;
+    flex-display: column;
+}
+
+header{
+    grid-area: header;
+    padding: 10px;
+}
+
+
+#new-todo{
+    grid-row: 1;
+}
+
+#newTime{
+    grid-row: 2;
+}
+
+@media screen and (min-width: 1025px){
+    h2{
+        font-size: 50px;
+    }
+    p{
+        font-size: 14px;
+    }
+
+    a{
+        font-size: 15px;
+    }
+
+
+}

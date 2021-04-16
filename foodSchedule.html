@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Schedule</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<header>
+    <h2 id="date"></h2>
+</header>
+
+<div id="food-list">
+    <form v-on:submit.prevent="addNewFood">
+        <label for="new-food">Add a meal</label>
+        <input
+                v-model="newFoodText"
+                id="new-food"
+                placeholder="Eg Oatmeal"
+        >
+        <label for="newTime">Time</label>
+        <input
+                v-model="newItemTime"
+                id="newTime"
+                placeholder="08:00"
+        >
+        <button>Add</button>
+
+    </form>
+    <ul>
+        <li
+                is="food-item"
+                v-for="(food, index) in foods"
+                v-bind:style="{color: food.prioColor}"
+                v-bind:key="food.id"
+                v-bind:title="food.title"
+                v-bind:time="food.time"
+                v-bind:prio="food.prio"
+                v-on:remove="foods.splice(index, 1)"
+                v-on:prio="food.prio = 1; food.prioColor = 'red'"
+                v-on:notpriority="food.prio = 0; food.prioColor = 'black'"
+        ></li>
+    </ul>
+
+    <article>
+        <button v-if="foods.length > 1" v-on:click="sortByPriority">Sort by priority</button>
+    </article>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+
+    let today = new Date();
+    let fullDate = 'Current date: ' + today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+    document.getElementById("date").innerHTML = fullDate;
+
+    Vue.component('food-item', {
+        template: `
+    <li>
+      {{ title }}
+      {{ time }}
+      <button v-on:click="$emit('remove')">Remove</button>
+      <button v-on:click="$emit('prio')">Change Prio</button>
+    <button v-on:click="$emit('notpriority')"> Set default</button>
+    </li>
+  `,
+        props: ['title','time','prio']
+    })
+
+    new Vue({
+        el: '#food-list',
+        data: {
+            newFoodText: '',
+            newItemTime: '',
+            foods: [
+                {
+                    id: 1,
+                    title: 'Oatmeal',
+                    time: '08:00',
+                    prio: 0,
+                    prioColor: 'black'
+                },
+                {
+                    id: 2,
+                    title: 'Pasta',
+                    time: '12:00',
+                    prio: 0,
+                    prioColor: 'black'
+                },
+                {
+                    id: 3,
+                    title: 'Risotto',
+                    time: '18:00',
+                    prio: 0,
+                    prioColor: 'black'
+                }
+            ],
+            nextFoodId: 4
+        },
+        methods: {
+            addNewFood: function () {
+                this.foods.push({
+                    id: this.nextFoodId++,
+                    title: this.newFoodText,
+                    time: this.newItemTime,
+                    prio: 0
+                })
+                this.newFoodText = ''
+            },
+
+            sortByPriority: function (){
+                console.log('sortByPriority() called')
+                return this.foods.sort((a, b) => Boolean(b.prio) - Boolean(a.prio))
+            },
+
+        }
+    })
+</script>
+</body>
+</html>
